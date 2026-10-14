@@ -1,0 +1,27 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import penguins from "../../../assets/penguins.json";
+
+// Génération automatique de la liste des espèces uniques
+const speciesList = [...new Set(penguins.map((p) => p.species))];
+---
+
+<Layout>
+  <main class="p-8">
+    <h1 class="text-2xl font-bold mb-6">Liste des Espèces de Manchots</h1>
+    <ul class="list-disc pl-6 space-y-2">
+      {
+        speciesList.map((species) => (
+          <li>
+            <a
+              href={`/penguins/specie/${species}`}
+              class="text-blue-600 hover:underline font-medium text-lg"
+            >
+              Voir les graphiques pour : {species}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

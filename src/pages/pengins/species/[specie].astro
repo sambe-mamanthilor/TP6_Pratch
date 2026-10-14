@@ -1,0 +1,41 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import PlotFigure from "../../../components/PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../../../assets/penguins.json";
+
+// Utilisation de getStaticPaths pour le pré-rendu statique des routes paramétriques
+export function getStaticPaths() {
+  const speciesList = [...new Set(penguins.map((p) => p.species))];
+  return speciesList.map((specie) => ({
+    params: { specie },
+  }));
+}
+
+const { specie } = Astro.params;
+const filteredPenguins = penguins.filter((p) => p.species === specie);
+---
+
+<Layout>
+  <main class="p-8">
+    <a href="/penguins/specie" class="text-blue-500 hover:underline mb-4 inline-block">
+      ← Retour à la liste des espèces
+    </a>
+    <h1 class="text-2xl font-bold mb-6">Espèce : {specie}</h1>
+
+    <div class="border p-4 rounded-lg bg-gray-50">
+      <PlotFigure
+        options={{
+          title: `Graphique - ${specie}`,
+          marks: [
+            Plot.dot(filteredPenguins, {
+              x: "culmen_length_mm",
+              y: "culmen_depth_mm",
+              stroke: "species",
+            }),
+          ],
+        }}
+      />
+    </div>
+  </main>
+</Layout>
