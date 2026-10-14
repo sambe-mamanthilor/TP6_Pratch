@@ -14,7 +14,7 @@ const speciesList = [...new Set(penguins.map((p) => p.species))];
         speciesList.map((species) => (
           <li>
             <a
-              href={`/penguins/specie/${species}`}
+              href={`/penguins/specie/${species}/`}
               class="text-blue-600 hover:underline font-medium text-lg"
             >
               Voir les graphiques pour : {species}

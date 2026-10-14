@@ -14,7 +14,7 @@ const sexList = [...new Set(penguins.map((p) => p.sex).filter(Boolean))];
         sexList.map((sex) => (
           <li>
             <a
-              href={`/penguins/sex/${sex}`}
+              href={`/penguins/sex/${sex}/`}
               class="text-blue-600 hover:underline font-medium text-lg"
             >
               Voir les manchots de sexe : {sex}

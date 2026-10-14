@@ -2,8 +2,14 @@
 import Layout from "../../../layouts/Layout.astro";
 import cars from "../../../assets/cars.json";
 
-// Extraction dynamique des marques uniques
-const brandList = [...new Set(cars.map((c: any) => c.Brand))];
+// Extraire la marque (premier mot de la propriété "name")
+const brandList = [
+  ...new Set(
+    cars
+      .map((c: any) => (c.name ? c.name.split(" ")[0] : null))
+      .filter(Boolean)
+  ),
+].sort();
 ---
 
 <Layout>
@@ -14,10 +20,10 @@ const brandList = [...new Set(cars.map((c: any) => c.Brand))];
         brandList.map((brand) => (
           <li>
             <a
-              href={`/cars/brand/${brand}`}
+              href={`/cars/brand/${brand}/`}
               class="text-blue-600 hover:underline font-medium text-lg"
             >
-              Voir le graphique des voitures : {brand}
+              Voir le graphique pour la marque : {brand}
             </a>
           </li>
         ))

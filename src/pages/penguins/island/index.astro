@@ -13,7 +13,7 @@ const islandList = [...new Set(penguins.map((p) => p.island))];
         islandList.map((island) => (
           <li>
             <a
-              href={`/penguins/island/${island}`}
+              href={`/penguins/island/${island}/`}
               class="text-blue-600 hover:underline font-medium text-lg"
             >
               Voir les manchots sur l'île : {island}
