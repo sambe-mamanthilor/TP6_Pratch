@@ -4,7 +4,6 @@ import PlotFigure from "../../../components/PlotFigure.astro";
 import * as Plot from "@observablehq/plot";
 import penguins from "../../../assets/penguins.json";
 
-// Utilisation de getStaticPaths pour le pré-rendu statique des routes paramétriques
 export function getStaticPaths() {
   const speciesList = [...new Set(penguins.map((p) => p.species))];
   return speciesList.map((specie) => ({
