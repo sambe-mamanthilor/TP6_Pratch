@@ -1,21 +1,40 @@
 ---
-import PlotFigure from "../components/PlotFigure.astro";
 import Layout from "../layouts/Layout.astro";
+import PlotFigure from "../components/PlotFigure.astro";
 import * as Plot from "@observablehq/plot";
 import penguins from "../assets/penguins.json";
+
+// Extraction automatique des espèces uniques
+const speciesList = [...new Set(penguins.map((p) => p.species))];
 ---
 
 <Layout>
-  <h1 class="text-2xl">Test Astro et Plot (Observablehq)</h1>
-  <PlotFigure
-    options={{
-      marks: [
-        Plot.dot(penguins, {
-          x: "culmen_length_mm",
-          y: "culmen_depth_mm",
-          stroke: "species",
-        }),
-      ],
-    }}
-  />
+  <main class="p-8">
+    <h1 class="text-2xl font-bold mb-6">Graphiques par Espèce (Génération automatique)</h1>
+
+    <div class="flex flex-col gap-8">
+      {
+        speciesList.map((species) => {
+          const filteredData = penguins.filter((p) => p.species === species);
+          return (
+            <section class="border p-4 rounded-lg bg-gray-50">
+              <h2 class="text-xl font-bold mb-2">{species}</h2>
+              <PlotFigure
+                options={{
+                  title: `Espèce : ${species}`,
+                  marks: [
+                    Plot.dot(filteredData, {
+                      x: "culmen_length_mm",
+                      y: "culmen_depth_mm",
+                      stroke: "species",
+                    }),
+                  ],
+                }}
+              />
+            </section>
+          );
+        })
+      }
+    </div>
+  </main>
 </Layout>
