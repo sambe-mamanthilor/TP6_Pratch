@@ -1,0 +1,40 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import PlotFigure from "../../../components/PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../../../assets/penguins.json";
+
+export function getStaticPaths() {
+  const sexList = [...new Set(penguins.map((p) => p.sex).filter(Boolean))];
+  return sexList.map((sex) => ({
+    params: { sex },
+  }));
+}
+
+const { sex } = Astro.params;
+const filteredPenguins = penguins.filter((p) => p.sex === sex);
+---
+
+<Layout>
+  <main class="p-8">
+    <a href="/penguins/sex" class="text-blue-500 hover:underline mb-4 inline-block">
+      ← Retour à la liste des sexes
+    </a>
+    <h1 class="text-2xl font-bold mb-6">Sexe : {sex}</h1>
+
+    <div class="border p-4 rounded-lg bg-gray-50">
+      <PlotFigure
+        options={{
+          title: `Graphique - Manchots ${sex}`,
+          marks: [
+            Plot.dot(filteredPenguins, {
+              x: "culmen_length_mm",
+              y: "culmen_depth_mm",
+              stroke: "species",
+            }),
+          ],
+        }}
+      />
+    </div>
+  </main>
+</Layout>
