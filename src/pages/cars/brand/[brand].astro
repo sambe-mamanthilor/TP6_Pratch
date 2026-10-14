@@ -1,0 +1,40 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import PlotFigure from "../../../components/PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+import cars from "../../../assets/cars.json";
+
+export function getStaticPaths() {
+  const brandList = [...new Set(cars.map((c: any) => c.Brand))];
+  return brandList.map((brand) => ({
+    params: { brand },
+  }));
+}
+
+const { brand } = Astro.params;
+const filteredCars = cars.filter((c: any) => c.Brand === brand);
+---
+
+<Layout>
+  <main class="p-8">
+    <a href="/cars/brand" class="text-blue-500 hover:underline mb-4 inline-block">
+      ← Retour à la liste des marques
+    </a>
+    <h1 class="text-2xl font-bold mb-6">Marque : {brand}</h1>
+
+    <div class="border p-4 rounded-lg bg-gray-50">
+      <PlotFigure
+        options={{
+          title: `Voitures - ${brand}`,
+          marks: [
+            Plot.dot(filteredCars, {
+              x: "Horsepower",
+              y: "Miles_per_Gallon",
+              stroke: "Origin",
+            }),
+          ],
+        }}
+      />
+    </div>
+  </main>
+</Layout>
